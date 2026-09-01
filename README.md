@@ -1,120 +1,256 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# NestJS Starter
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+An opinionated, production-ready NestJS 12 starter template powered by **Bun**, **Prisma 8 (Prisma Next)**, **PostgreSQL 16**, **Vitest**, and **Docker**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tech Stack
 
-## Description
+[![Bun](https://img.shields.io/badge/Bun-1.1+-fbf0df?style=for-the-badge&logo=bun&logoColor=fbf0df&labelColor=14151a)](https://bun.sh/)
+[![NestJS](https://img.shields.io/badge/NestJS-12-ea2845?style=for-the-badge&logo=nestjs&logoColor=ea2845&labelColor=14151a)](https://nestjs.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6-3178c6?style=for-the-badge&logo=typescript&logoColor=3178c6&labelColor=14151a)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-8_(Next)-2d3748?style=for-the-badge&logo=prisma&logoColor=white&labelColor=14151a)](https://www.prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169e1?style=for-the-badge&logo=postgresql&logoColor=4169e1&labelColor=14151a)](https://www.postgresql.org/)
+[![Vitest](https://img.shields.io/badge/Vitest-4-6e9f18?style=for-the-badge&logo=vitest&logoColor=6e9f18&labelColor=14151a)](https://vitest.dev/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ed?style=for-the-badge&logo=docker&logoColor=2496ed&labelColor=14151a)](https://www.docker.com/)
+[![oxlint](https://img.shields.io/badge/oxlint-lint-a855f7?style=for-the-badge&logo=oxc&logoColor=a855f7&labelColor=14151a)](https://oxc-project.github.io/)
+[![Prettier](https://img.shields.io/badge/Prettier-format-f7b93e?style=for-the-badge&logo=prettier&logoColor=f7b93e&labelColor=14151a)](https://prettier.io/)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prerequisites
 
-## Project setup
+- [Bun](https://bun.sh/) ≥ 1.1
+- [Docker](https://www.docker.com/) & Docker Compose (for the database / production deploy)
+
+---
+
+## Quick Start
+
+### 1. Clone & install
 
 ```bash
-$ bun install
+git clone <your-repo-url> my-app
+cd my-app
+bun install
 ```
 
-## Database Migration
+### 2. Configure environment
 
 ```bash
-$ bun run contract:emit
+cp .env.example .env
 ```
 
-## Compile and run the project
+Edit `.env` and set your `DATABASE_URL` (defaults to the Docker Compose PostgreSQL instance):
+
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/app_db?schema=public"
+```
+
+### 3. Start the database
 
 ```bash
-# development
-$ bun run start
-
-# watch mode
-$ bun run start:dev
-
-# production mode
-$ bun run start:prod
+docker compose up -d
 ```
 
-## Run tests
+This spins up a **PostgreSQL 16** container on port `5432` with a persistent volume.
+
+### 4. Initialize & migrate the database
 
 ```bash
-# unit tests
-$ bun run test
-
-# e2e tests
-$ bun run test:e2e
-
-# test coverage
-$ bun run test:cov
+bun run db:init        # Bootstrap the Prisma database
+bun run db:migrate     # Apply pending migrations
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 5. Generate Prisma contract artifacts
 
 ```bash
-$ bun install -g @nestjs/mau
-$ mau deploy
+bun run contract:emit
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+This generates the typed contract (`contract.json` + `contract.d.ts`) into `src/generated/prisma/`.
+
+### 6. Run the app
+
+```bash
+bun run start:dev
+```
+
+The server starts at **http://localhost:3000**. Hit `GET /health` to verify.
+
+---
+
+## Commands Reference
+
+### Development
+
+| Command | Description |
+| --- | --- |
+| `bun run start` | Start the app (single run) |
+| `bun run start:dev` | Start in watch mode (auto-restart on changes) |
+| `bun run start:debug` | Start in debug + watch mode |
+| `bun run start:prod` | Run the compiled production build (`node dist/main`) |
+| `bun run build` | Compile the project via NestJS CLI |
+
+### Database (Prisma 8)
+
+| Command | Description |
+| --- | --- |
+| `bun run contract:emit` | Generate typed contract artifacts (`contract.json` + `contract.d.ts`) |
+| `bun run db:init` | Initialize the Prisma database |
+| `bun run db:sign` | Sign the current database state |
+| `bun run db:migrate` | Apply pending migrations |
+| `bun run migration:plan` | Preview the next migration plan without applying |
+
+### Testing
+
+| Command | Description |
+| --- | --- |
+| `bun run test` | Run unit tests once |
+| `bun run test:watch` | Run unit tests in watch mode |
+| `bun run test:cov` | Run unit tests with coverage report |
+| `bun run test:debug` | Run tests with debugger attached |
+| `bun run test:e2e` | Run end-to-end tests |
+
+### Code Quality
+
+| Command | Description |
+| --- | --- |
+| `bun run lint` | Lint `src/` and `test/` with oxlint |
+| `bun run format` | Format code with Prettier |
+
+---
+
+## Docker
+
+### Development — database only
+
+Start just PostgreSQL for local development:
+
+```bash
+docker compose up -d          # Start PostgreSQL in the background
+docker compose logs -f        # Tail database logs
+docker compose down           # Stop and remove containers
+docker compose down -v        # Stop and remove containers + delete volume data
+```
+
+### Production — full stack
+
+Build and run the entire stack (app + database) using the production compose file:
+
+```bash
+# Build & start
+docker compose -f docker-compose.prod.yml up -d --build
+
+# View logs
+docker compose -f docker-compose.prod.yml logs -f
+docker compose -f docker-compose.prod.yml logs -f app        # App logs only
+docker compose -f docker-compose.prod.yml logs -f postgres   # DB logs only
+
+# Stop
+docker compose -f docker-compose.prod.yml down
+
+# Stop + wipe database volume
+docker compose -f docker-compose.prod.yml down -v
+
+# Rebuild after code changes
+docker compose -f docker-compose.prod.yml up -d --build --force-recreate
+```
+
+**Production compose features:**
+
+- Internal bridge network (database not exposed to host)
+- Resource limits (CPU + memory) on both app and database
+- Read-only filesystem for the app container
+- Health checks on both services
+- JSON log rotation (10 MB × 3 files)
+- Automatic restart (`unless-stopped`)
+
+### Build the Docker image standalone
+
+```bash
+docker build -t nest-project:latest .
+docker run -p 3000:3000 --env-file .env nest-project:latest
+```
+
+---
+
+## Project Structure
+
+```
+.
+├── prisma/
+│   ├── schema.prisma          # Prisma 8 data contract (User, Post models)
+│   └── db.ts                  # Typed Prisma client instance
+├── src/
+│   ├── config/
+│   │   └── env.validation.ts  # Runtime env validation (class-validator)
+│   ├── generated/prisma/      # Auto-generated contract artifacts (git-ignored)
+│   ├── app.module.ts          # Root module (Observe + Prisma)
+│   ├── app.controller.ts      # Health check endpoint (GET /health)
+│   ├── prisma.module.ts       # Global Prisma module
+│   ├── prisma.service.ts      # Injectable Prisma service wrapper
+│   └── main.ts                # Bootstrap & global pipes
+├── test/
+│   └── app.e2e-spec.ts        # End-to-end test
+├── prisma.config.ts           # Prisma 8 config (contract path, output, DB url)
+├── docker-compose.yaml        # Dev: PostgreSQL only
+├── docker-compose.prod.yml    # Prod: App + PostgreSQL (hardened)
+├── Dockerfile                 # Multi-stage Bun build
+├── vitest.config.ts           # Unit test config
+├── vitest.config.e2e.ts       # E2E test config
+├── oxlint.json                # Linter config
+├── tsconfig.json              # TypeScript config
+└── .env.example               # Environment variable template
+```
+
+---
+
+## Environment Variables
+
+| Variable | Required | Default | Description |
+| --- | --- | --- | --- |
+| `DATABASE_URL` | ✅ | — | PostgreSQL connection string |
+| `NODE_ENV` | — | `development` | `development` · `production` · `test` |
+| `PORT` | — | `3000` | HTTP server port |
+
+Docker Compose also reads these to configure PostgreSQL:
+
+| Variable | Default | Description |
+| --- | --- | --- |
+| `DB_USER` | `postgres` | PostgreSQL user |
+| `DB_PASSWORD` | `postgres` | PostgreSQL password |
+| `DB_NAME` | `app_db` | PostgreSQL database name |
+| `DB_PORT` | `5432` | Host port mapping for PostgreSQL |
+| `APP_PORT` | `3000` | Host port mapping for the app (prod compose) |
+
+---
+
+## Data Models
+
+The starter ships with two example models defined in `prisma/schema.prisma`:
+
+**User** — `id`, `email` (unique), `name`, `posts[]`, `createdAt`, `updatedAt`
+
+**Post** — `id`, `title`, `content`, `published`, `author` → User, `createdAt`, `updatedAt`
+
+Modify or replace these to fit your domain, then run:
+
+```bash
+bun run contract:emit      # Regenerate the typed contract
+bun run migration:plan     # Preview the migration
+bun run db:migrate         # Apply it
+```
+
+---
 
 ## Observability
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+This starter includes `@nestjs/observe` pre-configured in `app.module.ts`. To activate it:
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+1. Sign up at [observe.nestjs.com](https://observe.nestjs.com)
+2. Replace `YOUR_APP_KEY` and `YOUR_APP_SECRET` in `app.module.ts`
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+You get distributed tracing, auto-correlated logs, request metrics, and error telemetry out of the box.
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observer](https://observer.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+---
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+[UNLICENSED](./LICENSE)
