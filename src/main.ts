@@ -16,6 +16,9 @@ async function bootstrap() {
     }),
   );
 
+  app.enableShutdownHooks();
+
   await app.listen(configService.get<number>('PORT') ?? 3000);
 }
+
 bootstrap();
